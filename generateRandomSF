@@ -1,0 +1,16 @@
+trigger generateRandomSF on Lead(after insert) {
+    List<Lead> leadList = [SELECT Id,AutoId__c FROM Lead where Id in:Trigger.New];
+    for(Lead l: leadList)
+    {
+        if(trigger.isAfter && trigger.isInsert){
+            String str = string.valueof(Math.abs(Crypto.getRandomLong()));
+            String randomNumber1 = str.substring(0, 4);
+            str = string.valueof(Math.abs(Crypto.getRandomLong()));
+            String randomNumber2 = str.substring(0, 4);
+            l.Sorting_Variable__c= randomNumber1+l.AutoId__c+randomNumber2;
+            
+        }
+        
+    }
+    update leadList;
+}
